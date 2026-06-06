@@ -1,3 +1,5 @@
+import { asset } from "@/lib/asset";
+
 // `LOGO_RENDER` is how big the logo actually looks; `LOGO_LAYOUT` is the
 // vertical space it reserves in the nav. Keeping LAYOUT fixed at 56 means the
 // navbar height never changes no matter how large RENDER gets — the extra
@@ -18,7 +20,7 @@ export function Logo({ tone = "on-dark" }: { tone?: "on-dark" | "on-light" }) {
       }}
     >
       <img
-        src="/logo.png"
+        src={asset("/logo.png")}
         alt="Ras El Hekma"
         style={{
           height: LOGO_RENDER,

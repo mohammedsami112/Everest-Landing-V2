@@ -9,6 +9,7 @@ import {
   IconPin,
   IconWallet,
 } from "../icons";
+import { asset } from "@/lib/asset";
 
 const pillars = [
   { icon: <IconPin size={20} />, label: "موقع استثنائي" },
@@ -197,7 +198,7 @@ export function FinalCTA() {
               position: "absolute",
               inset: 0,
               zIndex: 0,
-              backgroundImage: 'url("/hero-coastal.jpeg")',
+              backgroundImage: `url("${asset("/hero-coastal.jpeg")}")`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               opacity: 0.32,

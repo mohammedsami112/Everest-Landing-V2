@@ -6,6 +6,7 @@ import {
   IconHeadphones,
   IconShield,
 } from "../icons";
+import { asset } from "@/lib/asset";
 
 export function ResultsSection() {
   const items = [
@@ -53,7 +54,7 @@ export function ResultsSection() {
       >
         <div className="reveal" style={{ paddingTop: 12 }}>
           <img
-            src="/developer-logo.png"
+            src={asset("/developer-logo.png")}
             alt="Developer"
             style={{
               display: "block",

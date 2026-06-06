@@ -1,6 +1,7 @@
 "use client";
 
 import { IconArrow } from "../icons";
+import { asset } from "@/lib/asset";
 
 export function Hero() {
   const scrollToForm = () => {
@@ -24,7 +25,7 @@ export function Hero() {
           position: "absolute",
           inset: 0,
           zIndex: 0,
-          backgroundImage: 'url("/hero-coastal.jpeg")',
+          backgroundImage: `url("${asset("/hero-coastal.jpeg")}")`,
           backgroundSize: "cover",
           backgroundPosition: "center center",
         }}

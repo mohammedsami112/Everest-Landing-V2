@@ -1,6 +1,7 @@
 "use client";
 
 import { IconArrow, IconBuilding, IconPin, IconTree } from "../icons";
+import { asset } from "@/lib/asset";
 
 export function WhyHekma() {
   const items = [
@@ -50,7 +51,7 @@ export function WhyHekma() {
             </p>
 
             <img
-              src="/why-hekma.jpg"
+              src={asset("/why-hekma.jpg")}
               alt="رأس الحكمة"
               className="reveal reh-why-image"
               style={{

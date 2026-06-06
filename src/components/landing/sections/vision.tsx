@@ -1,4 +1,5 @@
 import { IconBuilding, IconChart, IconGlobe, IconLeaf } from "../icons";
+import { asset } from "@/lib/asset";
 
 export function VisionSection() {
   const pillars = [
@@ -117,7 +118,7 @@ export function VisionSection() {
           </div>
 
           <img
-            src="/vision.jpg"
+            src={asset("/vision.jpg")}
             alt="رؤية المشروع"
             className="reveal reh-vision-image"
             style={{
