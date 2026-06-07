@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, type ChangeEvent } from "react";
-import { IconArrow, IconCheck, IconShield } from "./icons";
+import { useRouter } from "next/navigation";
+import { IconArrow, IconShield } from "./icons";
 
 type Values = {
   name: string;
@@ -21,10 +22,60 @@ const INITIAL: Values = {
 
 const TIME_OPTIONS = ["في الصباح", "بعد الظهر", "في المساء", "في أي وقت"];
 
+type FieldProps = {
+  label: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  full?: boolean;
+  /** Latin input (phone/email): render LTR but keep text right-aligned. */
+  ltr?: boolean;
+};
+
+// Defined at module scope (not inside LeadForm) so its identity is stable
+// across renders. A component re-created each render makes React remount the
+// <input> on every keystroke, which drops focus after a single character.
+function Field({
+  label,
+  value,
+  onChange,
+  error,
+  type = "text",
+  placeholder,
+  required,
+  full = false,
+  ltr = false,
+}: FieldProps) {
+  return (
+    <div
+      className={`field ${error ? "invalid" : ""}`}
+      style={{ gridColumn: full ? "1 / -1" : "auto" }}
+    >
+      <label>
+        {label}
+        {required && <span className="req">*</span>}
+      </label>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        dir={ltr ? "ltr" : "rtl"}
+        style={ltr ? { textAlign: "right" } : undefined}
+      />
+      <span className="err">{error || ""}</span>
+    </div>
+  );
+}
+
 export function LeadForm() {
+  const router = useRouter();
   const [v, setV] = useState<Values>(INITIAL);
   const [err, setErr] = useState<Errors>({});
-  const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const set =
     (k: keyof Values) =>
@@ -45,85 +96,13 @@ export function LeadForm() {
 
   const submit = (ev: React.FormEvent) => {
     ev.preventDefault();
+    if (submitting) return;
     if (!validate()) return;
-    setSent(true);
+    setSubmitting(true);
+    // No backend yet — on success, send the user to the thank-you page.
+    // router.push() prepends basePath automatically (unlike asset()).
+    router.push("/thank-you");
   };
-
-  if (sent) {
-    return (
-      <div style={{ textAlign: "center", padding: "24px 8px" }}>
-        <div
-          style={{
-            width: 56,
-            height: 56,
-            borderRadius: "50%",
-            background: "var(--accent-soft)",
-            color: "var(--accent)",
-            display: "grid",
-            placeItems: "center",
-            margin: "0 auto 16px",
-          }}
-        >
-          <IconCheck size={28} stroke={2} />
-        </div>
-        <div
-          className="ar-display"
-          style={{ fontSize: 24, color: "var(--on-deep)", marginBottom: 8 }}
-        >
-          تم استلام طلبك
-        </div>
-        <p
-          style={{
-            color: "var(--on-deep-mute)",
-            margin: 0,
-            fontSize: 14,
-            lineHeight: 1.7,
-          }}
-        >
-          سيتواصل معك أحد استشاريينا خلال 24 ساعة لتنسيق استشارتك المجانية.
-        </p>
-      </div>
-    );
-  }
-
-  const Field = ({
-    k,
-    label,
-    type = "text",
-    placeholder,
-    required,
-    full = false,
-  }: {
-    k: keyof Values;
-    label: string;
-    type?: string;
-    placeholder?: string;
-    required?: boolean;
-    full?: boolean;
-  }) => (
-    <div
-      className={`field ${err[k] ? "invalid" : ""}`}
-      style={{ gridColumn: full ? "1 / -1" : "auto" }}
-    >
-      <label>
-        {label}
-        {required && <span className="req">*</span>}
-      </label>
-      <input
-        type={type}
-        value={v[k]}
-        onChange={set(k)}
-        placeholder={placeholder}
-        dir={k === "phone" || k === "email" ? "ltr" : "rtl"}
-        style={
-          k === "phone" || k === "email"
-            ? { textAlign: "right" }
-            : undefined
-        }
-      />
-      <span className="err">{err[k] || ""}</span>
-    </div>
-  );
 
   return (
     <form
@@ -138,13 +117,23 @@ export function LeadForm() {
           gap: 14,
         }}
       >
-        <Field k="name" label="الاسم بالكامل" required placeholder="اكتب اسمك" />
         <Field
-          k="phone"
+          label="الاسم بالكامل"
+          value={v.name}
+          onChange={set("name")}
+          error={err.name}
+          required
+          placeholder="اكتب اسمك"
+        />
+        <Field
           label="رقم الهاتف"
+          value={v.phone}
+          onChange={set("phone")}
+          error={err.phone}
           type="tel"
           required
           placeholder="01x xxx xxxx"
+          ltr
         />
         <div className="field">
           <label>الوقت المناسب للتواصل</label>
@@ -166,20 +155,31 @@ export function LeadForm() {
           <span className="err" />
         </div>
         <Field
-          k="email"
           label="البريد الإلكتروني (اختياري)"
+          value={v.email}
+          onChange={set("email")}
+          error={err.email}
           type="email"
           placeholder="name@email.com"
+          ltr
         />
       </div>
 
       <button
         type="submit"
         className="btn btn-primary"
-        style={{ marginTop: 6, width: "100%" }}
+        disabled={submitting}
+        style={{
+          marginTop: 6,
+          width: "100%",
+          opacity: submitting ? 0.75 : 1,
+          cursor: submitting ? "default" : "pointer",
+        }}
       >
-        احجز استشارة مجانية
-        <IconArrow size={16} style={{ transform: "scaleX(-1)" }} />
+        {submitting ? "جارٍ الإرسال…" : "احجز استشارة مجانية"}
+        {!submitting && (
+          <IconArrow size={16} style={{ transform: "scaleX(-1)" }} />
+        )}
       </button>
 
       <div
