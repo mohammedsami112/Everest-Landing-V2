@@ -244,6 +244,122 @@
   vertical-align: middle;
 }
 
+/* ── Gallery: grid + lightbox ─────────────────────────────────────────────
+   Tile columns are set inline (3) and narrowed in the responsive blocks. */
+.reh-gallery-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--line);
+  box-shadow: var(--shadow-sm);
+  isolation: isolate;
+}
+.reh-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reh-gallery-tile:hover .reh-gallery-img,
+.reh-gallery-tile:focus-visible .reh-gallery-img { transform: scale(1.06); }
+.reh-gallery-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(180deg, transparent 55%, rgba(8, 27, 44, 0.3));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.reh-gallery-tile:hover::after,
+.reh-gallery-tile:focus-visible::after { opacity: 1; }
+.reh-gallery-tile:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Lightbox overlay (sits above the sticky nav, z-index: 50) */
+.reh-lb {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(6, 17, 28, 0.92);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  animation: reh-fade 0.25s ease both;
+}
+.reh-lb-stage {
+  margin: 0;
+  display: grid;
+  place-items: center;
+  max-width: 92vw;
+  max-height: 84vh;
+}
+.reh-lb-img {
+  max-width: min(92vw, 1200px);
+  max-height: 84vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 70px -16px rgba(0, 0, 0, 0.65);
+}
+/* Placeholder variant needs explicit size (no intrinsic dimensions). */
+.reh-lb .ph.reh-lb-img {
+  width: min(92vw, 1100px);
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
+.reh-lb-close,
+.reh-lb-nav {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(240, 233, 218, 0.22);
+  background: rgba(240, 233, 218, 0.08);
+  color: var(--on-deep);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.reh-lb-close:hover,
+.reh-lb-nav:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1208;
+}
+.reh-lb-close:focus-visible,
+.reh-lb-nav:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.reh-lb-close { top: 20px; right: 20px; width: 46px; height: 46px; }
+.reh-lb-nav { top: 50%; transform: translateY(-50%); width: 54px; height: 54px; }
+.reh-lb-nav:hover { transform: translateY(-50%) scale(1.06); }
+.reh-lb-prev { right: 20px; }   /* RTL: previous image */
+.reh-lb-next { left: 20px; }    /* RTL: next image */
+.reh-lb-counter {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  direction: ltr; /* keep "3 / 9" order; RTL would render it "9 / 3" */
+  color: var(--on-deep-mute);
+}
+
 /* Scroll reveal */
 @keyframes reh-rise {
   from { opacity: 0; transform: translateY(calc(18px * var(--reveal))); }
@@ -330,6 +446,9 @@
   .reh-life-h2 { font-size: 48px !important; }
   .reh-life-image { height: 420px !important; }
 
+  .reh-gallery { padding: 88px 28px !important; }
+  .reh-gallery-h2 { font-size: 44px !important; }
+
   .reh-units { padding: 88px 28px !important; }
   .reh-units-h2 { font-size: 44px !important; }
   .reh-units-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -392,6 +511,14 @@
   .reh-life-h2 { font-size: 36px !important; }
   .reh-life-image { height: 300px !important; }
 
+  .reh-gallery { padding: 64px 20px !important; }
+  .reh-gallery-h2 { font-size: 32px !important; }
+  .reh-gallery-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+  .reh-lb-nav { width: 44px !important; height: 44px !important; }
+  .reh-lb-prev { right: 10px !important; }
+  .reh-lb-next { left: 10px !important; }
+  .reh-lb-close { top: 12px !important; right: 12px !important; }
+
   .reh-units { padding: 64px 20px !important; }
   .reh-units-h2 { font-size: 32px !important; }
   .reh-units-grid { grid-template-columns: 1fr !important; }
@@ -426,6 +553,8 @@
   .reh-vision-h2 { font-size: 30px !important; }
   .reh-vision-pillars { grid-template-columns: 1fr 1fr !important; }
   .reh-life-h2 { font-size: 30px !important; }
+  .reh-gallery-h2 { font-size: 28px !important; }
+  .reh-gallery-grid { grid-template-columns: 1fr !important; }
   .reh-units-h2 { font-size: 28px !important; }
   .reh-invest-h2 { font-size: 30px !important; }
   .reh-invest-pillars { grid-template-columns: 1fr !important; }

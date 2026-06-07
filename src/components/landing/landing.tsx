@@ -8,6 +8,7 @@ import { WhyHekma } from "./sections/why-hekma";
 import { ResultsSection } from "./sections/results";
 import { VisionSection } from "./sections/vision";
 import { LifestyleSection } from "./sections/lifestyle";
+import { GallerySection } from "./sections/gallery";
 import { UnitsSection } from "./sections/units";
 import { InvestmentSection } from "./sections/investment";
 import { FinalCTA } from "./sections/final-cta";
@@ -25,6 +26,7 @@ export function Landing() {
       <ResultsSection />
       <VisionSection />
       <LifestyleSection />
+      <GallerySection />
       <UnitsSection />
       <InvestmentSection />
       <div data-lead-form>
