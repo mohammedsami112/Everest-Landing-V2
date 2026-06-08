@@ -1,16 +1,69 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+/* ──────────────────────────────────────────────────────────────────────────
+   PHP build note — keep in sync with src/app/globals.css
 
-@custom-variant dark (&:is(.dark *));
+   The Next.js source imports Tailwind here (`@import "tailwindcss"` etc.).
+   The PHP version is self-contained, so those imports are replaced by the
+   reset below. Everything from `:root {` downward is copied VERBATIM from
+   src/app/globals.css — when you change tokens, classes, or media queries in
+   globals.css, paste the same change here.
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-heading: var(--font-display);
+   The reset reproduces the slice of Tailwind preflight the markup relied on
+   (margin resets on headings/p, button normalization, image display:block)
+   plus the html/body utilities that layout.tsx applied as classes
+   (h-full / antialiased / min-h-full / flex / flex-col).
+   ────────────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
+html {
+  height: 100%;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+}
+p, figure, blockquote, dl, dd { margin: 0; }
+a { color: inherit; text-decoration: inherit; }
+img, svg, video, canvas { display: block; vertical-align: middle; }
+img, video { max-width: 100%; height: auto; }
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+}
+button, select { text-transform: none; }
+button,
+[type="button"],
+[type="submit"] {
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+  cursor: pointer;
+}
+
+/* ── Hover/focus states ported from React onMouseEnter/onMouseLeave handlers.
+   In the Next.js source these live as inline JS on each card; here they are
+   plain CSS so the PHP markup stays declarative. Keep the values matched. */
+.reh-why-card { transition: transform .2s, box-shadow .2s; cursor: default; }
+.reh-why-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.reh-results-item { transition: background .2s, border-color .2s; }
+.reh-results-item:hover { background: rgba(200,154,75,.06); border-color: var(--accent-soft); }
+.reh-units-card { transition: background .2s, border-color .2s; }
+.reh-units-card:hover { background: rgba(200,154,75,.06); border-color: var(--accent-soft); }
 
 /* Default site theme — overridden per-artboard via the Tweaks panel.
    Keys mirror the prototype in design/js/landing.jsx so component code stays
