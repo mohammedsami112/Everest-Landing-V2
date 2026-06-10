@@ -1,9 +1,9 @@
 <?php
 /** Investment — mirrors src/components/landing/sections/investment.tsx */
 $pillars = [
-    ['icon' => 'leaf', 'label' => 'جودة الحياة'],
-    ['icon' => 'chart', 'label' => 'الاستثمار طويل المدى'],
-    ['icon' => 'award', 'label' => 'النمو المستمر لسنوات'],
+    ['label' => 'جودة الحياة'],
+    ['label' => 'الاستثمار طويل المدى'],
+    ['label' => 'النمو المستمر لسنوات'],
 ];
 ?>
 <section class="reh-invest" style="background:var(--bg);padding:100px 48px">
@@ -30,9 +30,6 @@ $pillars = [
         <div class="reh-invest-pillars" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-top:28px">
 <?php foreach ($pillars as $p): ?>
           <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:22px 12px;border-radius:var(--radius);border:1px solid var(--accent-soft);background:rgba(255,255,255,.6)">
-            <span style="width:48px;height:48px;border-radius:var(--radius-sm);background:var(--accent-soft);color:var(--accent-deep);display:grid;place-items:center">
-              <?= icon($p['icon'], 24) ?>
-            </span>
             <div style="font-size:14px;font-weight:700;color:var(--ink);line-height:1.4"><?= e($p['label']) ?></div>
           </div>
 <?php endforeach; ?>

@@ -1,32 +1,22 @@
 "use client";
 
-import {
-  IconAward,
-  IconCheck,
-  IconHeadphones,
-  IconShield,
-} from "../icons";
 import { asset } from "@/lib/asset";
 
 export function ResultsSection() {
   const items = [
     {
-      icon: <IconCheck size={26} />,
       t: "الالتزام بالتسليم في الوقت المحدد",
       s: "سجل قوي في الالتزام بمواعيد التسليم",
     },
     {
-      icon: <IconAward size={26} />,
       t: "جودة تنفيذ بمعايير عالمية",
       s: "شراكات مع أفضل الاستشاريين والمقاولين",
     },
     {
-      icon: <IconHeadphones size={26} />,
       t: "خدمات ما بعد التسليم",
       s: "إدارة وتشغيل وصيانة بمعايير عالمية",
     },
     {
-      icon: <IconShield size={26} />,
       t: "ثقة مبنية على تجربة",
       s: "مشروعات ناجحة في مصر والإمارات",
     },
@@ -133,20 +123,6 @@ export function ResultsSection() {
                 e.currentTarget.style.borderColor = "var(--on-deep-line)";
               }}
             >
-              <span
-                style={{
-                  width: 46,
-                  height: 46,
-                  borderRadius: "var(--radius-sm)",
-                  background: "var(--accent-soft)",
-                  color: "var(--accent)",
-                  display: "grid",
-                  placeItems: "center",
-                  flexShrink: 0,
-                }}
-              >
-                {it.icon}
-              </span>
               <div>
                 <div
                   style={{

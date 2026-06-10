@@ -1,11 +1,10 @@
-import { IconAward, IconChart, IconLeaf } from "../icons";
 import { Placeholder } from "../placeholder";
 
 export function InvestmentSection() {
   const pillars = [
-    { icon: <IconLeaf size={24} />, label: "جودة الحياة" },
-    { icon: <IconChart size={24} />, label: "الاستثمار طويل المدى" },
-    { icon: <IconAward size={24} />, label: "النمو المستمر لسنوات" },
+    { label: "جودة الحياة" },
+    { label: "الاستثمار طويل المدى" },
+    { label: "النمو المستمر لسنوات" },
   ];
 
   return (
@@ -79,19 +78,6 @@ export function InvestmentSection() {
                     background: "rgba(255,255,255,.6)",
                   }}
                 >
-                  <span
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: "var(--radius-sm)",
-                      background: "var(--accent-soft)",
-                      color: "var(--accent-deep)",
-                      display: "grid",
-                      placeItems: "center",
-                    }}
-                  >
-                    {p.icon}
-                  </span>
                   <div
                     style={{
                       fontSize: 14,
