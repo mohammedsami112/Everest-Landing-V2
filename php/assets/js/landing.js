@@ -168,7 +168,11 @@
       if (!name.value.trim()) { setError(name, "الاسم مطلوب"); ok = false; }
       else setError(name, "");
 
-      if (!/^[\d\s+()-]{7,}$/.test(phone.value)) { setError(phone, "رقم هاتف غير صالح"); ok = false; }
+      // Egyptian mobile: exactly 11 digits starting 010/011/012/015, after
+      // stripping the separators the placeholder invites. Mirrors
+      // invalid_EG_phone() in inc/validation.php — keep in sync.
+      var phoneDigits = phone.value.replace(/[\s()\-]/g, "");
+      if (!/^01[0125]\d{8}$/.test(phoneDigits)) { setError(phone, "رقم هاتف غير صالح"); ok = false; }
       else setError(phone, "");
 
       if (email.value.trim() && !/^\S+@\S+\.\S+$/.test(email.value)) { setError(email, "بريد إلكتروني غير صالح"); ok = false; }

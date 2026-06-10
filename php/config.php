@@ -19,3 +19,5 @@ const BASE_PATH = '';
 
 require __DIR__ . '/inc/helpers.php';
 require __DIR__ . '/inc/icons.php';
+require __DIR__ . '/inc/validation.php';
+require __DIR__ . '/inc/db.php';
