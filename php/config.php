@@ -17,6 +17,9 @@ if (session_status() === PHP_SESSION_NONE) {
  */
 const BASE_PATH = '';
 
+require __DIR__ . '/inc/env.php';
+env_load(__DIR__ . '/.env');
+
 require __DIR__ . '/inc/helpers.php';
 require __DIR__ . '/inc/icons.php';
 require __DIR__ . '/inc/validation.php';

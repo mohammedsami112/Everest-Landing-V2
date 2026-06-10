@@ -1,0 +1,4 @@
+# Never serve dotfiles (.env, .env.example, ...) — they hold secrets.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

@@ -2,13 +2,13 @@
 /**
  * Telegram notifications for new leads. Only loaded by submit.php on the
  * success path, and only used when the lead arrived with ad_network = 'n'
- * (the Nabd network).
+ * (the Nabd network). Bot token and chat ids come from php/.env (see
+ * .env.example), loaded by config.php.
  */
 declare(strict_types=1);
 
-const TELEGRAM_BOT_TOKEN = '6737596189:AAGZ-YMVrcZC4-lfHIQeQkFNCTHi3_Gcj9E';
-const TELEGRAM_CHAT_NABD_ALL = -1002160532939;   // full lead details
-const TELEGRAM_CHAT_NABD_COUNT = -1002171522374; // count channel: name only
+define('TELEGRAM_CHAT_NABD_ALL', (int) env('TELEGRAM_CHAT_NABD_ALL', '0'));   // full lead details
+define('TELEGRAM_CHAT_NABD_COUNT', (int) env('TELEGRAM_CHAT_NABD_COUNT', '0')); // count channel: name only
 
 /**
  * Fire-and-forget sendMessage. The result is intentionally ignored — a
@@ -16,11 +16,16 @@ const TELEGRAM_CHAT_NABD_COUNT = -1002171522374; // count channel: name only
  */
 function telegram_send(int $chatId, string $text): void
 {
+    $token = env('TELEGRAM_BOT_TOKEN');
+    if ($token === null || $chatId === 0) {
+        return; // unconfigured .env — skip silently, like a failed send
+    }
+
     $payload = json_encode(['chat_id' => $chatId, 'text' => $text]);
 
     $ch = curl_init();
     curl_setopt_array($ch, [
-        CURLOPT_URL => 'https://api.telegram.org/bot' . TELEGRAM_BOT_TOKEN . '/sendMessage',
+        CURLOPT_URL => 'https://api.telegram.org/bot' . $token . '/sendMessage',
         CURLOPT_POST => true,
         CURLOPT_HTTPHEADER => ['content-type: application/json'],
         CURLOPT_POSTFIELDS => $payload,
